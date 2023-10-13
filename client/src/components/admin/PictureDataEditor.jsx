@@ -1,37 +1,77 @@
 /* eslint-disable react-refresh/only-export-components */
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import { Form, redirect, useLoaderData, useSubmit } from 'react-router-dom';
+import {
+  Form,
+  useLoaderData,
+  useNavigate,
+  useParams,
+  useRevalidator,
+} from 'react-router-dom';
 
 import customFetch from '../../assets/utils/customFetch';
-import AdminFormRow from './AdminFormRow';
-import { ToggleEditButton, SaveButton, DeleteButton } from './AdminFormButtons';
+import PictureDataEditorFormRow from './PictureDataEditorFormRow';
+import {
+  ToggleEditButton,
+  UpdateButton,
+  DeleteButton,
+} from './PictureDataEditorButtons';
 import { useAdminContext } from './adminContext';
+import { NEW_IMAGE } from '../../assets/utils/constants';
+import { toast } from 'react-toastify';
+import ConfirmationModal from '../ConfirmationModal';
 
 export const loader = async ({ params }) => {
-  const { pictureId } = params;
-  const { data } = await customFetch(`pictures/${pictureId}`);
-  return data;
+  const { pictureId, sectionId } = params;
+  let picture;
+  if (pictureId === NEW_IMAGE) {
+    picture = {
+      name: '',
+      url: null,
+      sectionId,
+    };
+  } else {
+    const { data } = await customFetch(`pictures/${pictureId}`);
+    picture = data;
+  }
+  return picture;
 };
 
 export const action = async ({ params, request }) => {
+  const { pictureId } = params;
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-  const { pictureId, sectionId } = params;
-  console.log('action:', data);
-  console.log('pictureId:', pictureId);
-  return redirect(`/admin/${sectionId}/${pictureId}`);
-  // customFetch.patch('/pictures/');
+  const intent = data.intent;
+
+  try {
+    switch (intent) {
+      case 'create':
+        return await customFetch.post(`/pictures/${pictureId}`, data);
+      case 'update':
+        return await customFetch.patch(`/pictures/${pictureId}`, data);
+      default:
+        break;
+    }
+  } catch (error) {
+    toast.error(`Algo ha salido mal: ${error.message}`);
+    console.log(error);
+  }
+
+  return null;
 };
 
 const PictureDataEditor = () => {
   const [isEditMode, setIsEditMode] = useState(true);
+  const [isConfirmationModalVisible, setIsConfirmationModalVisible] =
+    useState(false);
+  const { pictureId, sectionId } = useParams();
   const { setCurrentPictureName } = useAdminContext();
+  const navigate = useNavigate();
+  const revalidator = useRevalidator();
 
   const toggleEdit = () => {
     setIsEditMode(!isEditMode);
   };
-  const submit = useSubmit();
 
   const picture = useLoaderData();
   const { url, name } = picture;
@@ -46,8 +86,33 @@ const PictureDataEditor = () => {
     setCurrentPictureName(name);
   }, [name, setCurrentPictureName]);
 
+  const deletePicture = async () => {
+    try {
+      const { data } = await customFetch.delete(`/pictures/${pictureId}`);
+      setIsConfirmationModalVisible(false);
+      setCurrentPictureName('');
+      navigate(`/admin/${sectionId}`);
+      revalidator.revalidate();
+      toast.success(`'${data.picture.name}' eliminada`);
+    } catch (error) {
+      toast.error(`Algo ha salido mal: ${error.message}`);
+      console.log(error);
+    }
+  };
+
   return (
     <Wrapper>
+      <ConfirmationModal
+        isVisible={isConfirmationModalVisible}
+        setIsVisible={setIsConfirmationModalVisible}
+        message="¿Deseas eliminar esta imagen?"
+        acceptTag="Sí"
+        rejectTag="No"
+        onAccept={deletePicture}
+        onReject={() => {
+          setIsConfirmationModalVisible(false);
+        }}
+      />
       <div className="grid-layout">
         <Form
           className="form admin-form"
@@ -56,7 +121,7 @@ const PictureDataEditor = () => {
         >
           {Object.keys(iterablePicture).map((key) => {
             return (
-              <AdminFormRow
+              <PictureDataEditorFormRow
                 key={key}
                 name={key}
                 tag={key}
@@ -70,13 +135,15 @@ const PictureDataEditor = () => {
               <ToggleEditButton toggleEdit={toggleEdit} />
             ) : (
               <>
-                <SaveButton toggleEdit={toggleEdit} submit={submit} />
-                <DeleteButton toggleEdit={toggleEdit} />
+                <UpdateButton />
+                <DeleteButton
+                  setIsConfirmationModalVisible={setIsConfirmationModalVisible}
+                />
               </>
             )}
           </div>
         </Form>
-        <img src={url} alt="" />
+        {url ? <img src={url} alt="" /> : 'Subir imagen'}
       </div>
     </Wrapper>
   );

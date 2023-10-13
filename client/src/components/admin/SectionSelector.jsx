@@ -2,6 +2,8 @@ import { NavLink, useLoaderData } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAdminContext } from './adminContext';
 
+import { IoAddCircleOutline } from 'react-icons/io5';
+
 const SectionSelector = () => {
   const sections = useLoaderData();
   const { setCurrentPictureName } = useAdminContext();
@@ -23,6 +25,9 @@ const SectionSelector = () => {
           </NavLink>
         );
       })}
+      <button className="btn invisible-btn add-btn">
+        <IoAddCircleOutline />
+      </button>
     </Wrapper>
   );
 };

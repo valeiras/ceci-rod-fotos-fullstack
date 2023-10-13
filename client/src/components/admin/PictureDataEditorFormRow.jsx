@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import styled from 'styled-components';
-const AdminFormRow = ({ name, tag, value, isDisabled }) => {
+const PictureDataEditorFormRow = ({ name, tag, value, isDisabled }) => {
   return (
     <Wrapper className="form-row">
       <label htmlFor={name} className="admin-form-label">
@@ -10,13 +10,14 @@ const AdminFormRow = ({ name, tag, value, isDisabled }) => {
         className="form-input"
         type="text"
         name={name}
-        value={value}
+        defaultValue={value}
         disabled={isDisabled}
-      ></input>
+        required
+      />
     </Wrapper>
   );
 };
-export default AdminFormRow;
+export default PictureDataEditorFormRow;
 
 const Wrapper = styled.div`
   .admin-form-label {

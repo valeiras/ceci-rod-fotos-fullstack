@@ -762,7 +762,7 @@ Loading
   font-weight: 600;
   display: inline-block;
 }
-.btn:hover {
+.btn:not(.invisible-btn):hover {
   background: var(--color-2);
   color: white;
   box-shadow: var(--shadow-3);
@@ -772,4 +772,19 @@ Loading
 }
 button:disabled {
   cursor: wait;
+}
+
+.invisible-btn {
+  border: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.add-btn {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+
+.add-btn:hover {
+  transform: scale(1.05);
 }

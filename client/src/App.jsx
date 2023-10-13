@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { Home, AdminLayout, AdminPictureLayout, Login } from './routes';
+import { Home, AdminLayout, AdminPictureLayout, Login, Error } from './routes';
 import { action as loginAction } from './routes/Login';
 import { action as pictureDataEditorAction } from './components/admin/PictureDataEditor';
 
@@ -13,16 +13,19 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Home />,
+    errorElement: <Error />,
   },
   {
     path: '/login',
     element: <Login />,
     action: loginAction,
+    errorElement: <Error />,
   },
   {
     path: '/admin',
     element: <AdminLayout />,
     loader: sectionsLoader,
+    errorElement: <Error />,
     children: [
       {
         path: ':sectionId',
