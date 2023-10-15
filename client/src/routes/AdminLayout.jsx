@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom';
 import {
   AdminContextProvider,
   useAdminContext,
-} from '../components/admin/adminContext';
+} from '../components/admin/AdminContext';
 
 export const loader = async () => {
   const { data } = await customFetch('/sections');

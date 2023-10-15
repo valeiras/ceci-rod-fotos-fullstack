@@ -1,13 +1,13 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Home, AdminLayout, AdminPictureLayout, Login, Error } from './routes';
 import { action as loginAction } from './routes/Login';
-import { action as pictureDataEditorAction } from './components/admin/PictureDataEditor';
 
 import { loader as sectionsLoader } from './routes/AdminLayout';
 import { loader as picturesLoader } from './routes/AdminPictureLayout';
-import { loader as singlePictureLoader } from './components/admin/PictureDataEditor';
+import { loader as singlePictureLoader } from './components/admin/PictureEditor';
 
-import { PictureDataEditor } from './components/admin';
+import { PictureEditor } from './components/admin';
+import { PictureEditorContextProvider } from './components/admin/pictureEditorContext';
 
 const router = createBrowserRouter([
   {
@@ -34,9 +34,12 @@ const router = createBrowserRouter([
         children: [
           {
             path: ':pictureId',
-            element: <PictureDataEditor />,
+            element: (
+              <PictureEditorContextProvider>
+                <PictureEditor />
+              </PictureEditorContextProvider>
+            ),
             loader: singlePictureLoader,
-            action: pictureDataEditorAction,
           },
         ],
       },

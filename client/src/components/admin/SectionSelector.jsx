@@ -1,6 +1,6 @@
 import { NavLink, useLoaderData } from 'react-router-dom';
 import styled from 'styled-components';
-import { useAdminContext } from './adminContext';
+import { useAdminContext } from './AdminContext';
 
 import { IoAddCircleOutline } from 'react-icons/io5';
 
