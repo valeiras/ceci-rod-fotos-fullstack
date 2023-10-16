@@ -81,7 +81,8 @@ const Wrapper = styled.div`
   }
 
   h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     margin-bottom: 2rem;
+    font-weight: 600;
   }
 `;

@@ -6,20 +6,20 @@ import {
   AiFillCloseCircle,
 } from 'react-icons/ai';
 
-const SubmitButton = ({ icon, onClick }) => {
+const SubmitButton = ({ icon, intent }) => {
   return (
-    <button className="btn edit-btn" type="submit" onClick={onClick}>
+    <button className="btn edit-btn" type="submit" name="intent" value={intent}>
       {icon}
     </button>
   );
 };
 
-export const UpdateButton = ({ onClick }) => {
-  return SubmitButton({ icon: <AiFillSave />, onClick });
+export const UpdateButton = () => {
+  return SubmitButton({ icon: <AiFillSave />, intent: 'update' });
 };
 
-export const CreateButton = ({ onClick }) => {
-  return SubmitButton({ icon: <AiFillSave />, onClick });
+export const CreateButton = () => {
+  return SubmitButton({ icon: <AiFillSave />, intent: 'create' });
 };
 
 export const DeleteButton = ({ setIsConfirmationModalVisible }) => {

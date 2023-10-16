@@ -9,7 +9,6 @@ export const PictureEditorContextProvider = ({ children }) => {
   const [isNewPicture, setIsNewPicture] = useState(false);
   const [isConfirmationModalVisible, setIsConfirmationModalVisible] =
     useState(false);
-  const [intent, setIntent] = useState('');
   const [hasPictureFile, setHasPictureFile] = useState(false);
 
   return (
@@ -23,8 +22,6 @@ export const PictureEditorContextProvider = ({ children }) => {
         setIsNewPicture,
         isConfirmationModalVisible,
         setIsConfirmationModalVisible,
-        intent,
-        setIntent,
       }}
     >
       {children}

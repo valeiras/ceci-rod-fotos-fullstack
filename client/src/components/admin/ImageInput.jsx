@@ -1,11 +1,16 @@
 import { AiOutlineUpload } from 'react-icons/ai';
 import { usePictureEditorContext } from './pictureEditorContext';
 import styled from 'styled-components';
+import { useEffect } from 'react';
 
 // eslint-disable-next-line react/prop-types
 const ImageInput = () => {
   const { isNewPicture, hasPictureFile, setHasPictureFile } =
     usePictureEditorContext();
+
+  useEffect(() => {
+    document.getElementById('file-upload').value = '';
+  }, []);
 
   const handleImageInput = () => {
     const fileInput = document.getElementById('file-upload');

@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 
 import {
   Form,
+  redirect,
   useLoaderData,
   useNavigate,
   useParams,
@@ -18,6 +19,8 @@ import { usePictureEditorContext } from './pictureEditorContext';
 
 import ConfirmationModal from '../ConfirmationModal';
 import { pictureProps } from '../../data/pictureData';
+
+import imagekit from '../../assets/utils/imagekit';
 
 export const loader = async ({ params }) => {
   const { pictureId } = params;
@@ -34,6 +37,63 @@ export const loader = async ({ params }) => {
   return picture;
 };
 
+export const action = async ({ request, params }) => {
+  const formData = await request.formData();
+  const { sectionId, pictureId } = params;
+  const data = Object.fromEntries(formData);
+  data.sectionId = sectionId;
+  let picture;
+
+  try {
+    switch (data.intent) {
+      case 'create':
+        picture = await createNewPicture(data);
+        console.log(picture);
+        return redirect(`/admin/${sectionId}/${picture._id}`);
+      case 'update':
+        return customFetch.patch(`/pictures/${pictureId}`, data);
+      default:
+        break;
+    }
+  } catch (error) {
+    toast.error(`Algo ha salido mal: ${error.message}`);
+    console.log(error);
+    return error;
+  }
+
+  return null;
+};
+
+const createNewPicture = async (data) => {
+  const file = document.getElementById('file-upload');
+
+  try {
+    const { data: imagekitAuth } = await customFetch.get('/auth/imagekit');
+    const imagekitResult = await imagekit.upload({
+      file: file.files[0],
+      fileName: `${data.name}.jpg`,
+      token: imagekitAuth.token,
+      signature: imagekitAuth.signature,
+      expire: imagekitAuth.expire,
+      extensions: [
+        {
+          name: 'aws-auto-tagging',
+          minConfidence: 80,
+          maxTags: 10,
+        },
+      ],
+    });
+    console.log('The result is: ', imagekitResult);
+    data.url = imagekitResult.url;
+    const { data: axiosResult } = await customFetch.post('/pictures', data);
+    console.log(axiosResult.picture);
+    return axiosResult.picture;
+  } catch (error) {
+    console.log('The error is: ', error);
+    throw new Error(err);
+  }
+};
+
 const PictureEditor = () => {
   const {
     isConfirmationModalVisible,
@@ -43,7 +103,6 @@ const PictureEditor = () => {
     setIsNewPicture,
     hasPictureFile,
     setHasPictureFile,
-    intent,
   } = usePictureEditorContext();
   const { pictureId, sectionId } = useParams();
   const { setCurrentPictureName } = useAdminContext();
@@ -56,44 +115,16 @@ const PictureEditor = () => {
   useEffect(() => {
     setCurrentPictureName(name);
     setIsNewPicture(!url);
+    setIsEditMode(!url);
     setHasPictureFile(!!url);
-  }, [name, setCurrentPictureName, setHasPictureFile, setIsNewPicture, url]);
-
-  // ----------------------- Helper functions ----------------------------------------------
-
-  const handleSubmit = async (evt) => {
-    evt.preventDefault();
-    setIsEditMode(false);
-    const formData = new FormData(evt.target);
-    const data = Object.fromEntries(formData);
-    let response;
-    try {
-      switch (intent) {
-        case 'create':
-          if (!data.imgFile) {
-            throw new Error('Es necesario subir un archivo de imagen');
-          }
-          data.url =
-            'https://ceci-rodriguez-fotos.netlify.app/imgs/Medium/Atardeceres/Desert%20and%20the%20city.jpg';
-          data.sectionId = sectionId;
-          response = await customFetch.post(`/pictures/`, data);
-          navigate(`/admin/${sectionId}/${response.data.picture._id}`);
-          break;
-        case 'update':
-          await customFetch.patch(`/pictures/${pictureId}`, data);
-          break;
-        default:
-          break;
-      }
-    } catch (error) {
-      toast.error(`Algo ha salido mal: ${error.message}`);
-      console.log(error);
-      return error;
-    }
-
-    revalidator.revalidate();
-    return null;
-  };
+  }, [
+    name,
+    setCurrentPictureName,
+    setHasPictureFile,
+    setIsEditMode,
+    setIsNewPicture,
+    url,
+  ]);
 
   const deletePicture = async () => {
     try {
@@ -123,7 +154,7 @@ const PictureEditor = () => {
           setIsConfirmationModalVisible(false);
         }}
       />
-      <Form className="form grid-layout" onSubmit={handleSubmit}>
+      <Form className="form grid-layout" method="post">
         <div className="left-column">
           {pictureProps.map((prop) => {
             return (

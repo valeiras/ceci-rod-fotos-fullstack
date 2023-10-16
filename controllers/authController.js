@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { UnauthenticatedError } from '../errors/customErrors.js';
 import { comparePasword, hashPassword } from '../utils/passwordUtils.js';
 import { createJWT } from '../utils/tokenUtils.js';
+import ImageKit from 'imagekit';
 
 export const register = async (req, res) => {
   const isFirstUser = (await UserModel.countDocuments()) === 0;
@@ -36,4 +37,15 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
   res.cookie('token', '', { httpOnly: true, expires: new Date(Date.now()) });
   res.status(StatusCodes.OK).json({ msg: 'user logged out' });
+};
+
+export const authenticateImageKit = (req, res) => {
+  const imagekit = new ImageKit({
+    urlEndpoint: process.env.IMAGEKIT_URL,
+    publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+    privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+  });
+
+  const result = imagekit.getAuthenticationParameters();
+  res.send(result);
 };

@@ -4,7 +4,10 @@ import { action as loginAction } from './routes/Login';
 
 import { loader as sectionsLoader } from './routes/AdminLayout';
 import { loader as picturesLoader } from './routes/AdminPictureLayout';
-import { loader as singlePictureLoader } from './components/admin/PictureEditor';
+import {
+  loader as singlePictureLoader,
+  action as pictureEditorAction,
+} from './components/admin/PictureEditor';
 
 import { PictureEditor } from './components/admin';
 import { PictureEditorContextProvider } from './components/admin/pictureEditorContext';
@@ -40,6 +43,7 @@ const router = createBrowserRouter([
               </PictureEditorContextProvider>
             ),
             loader: singlePictureLoader,
+            action: pictureEditorAction,
           },
         ],
       },

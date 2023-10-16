@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { useNavigation, useParams } from 'react-router-dom';
 import {
   EnableEditModeButton,
   DisableEditButton,
@@ -9,27 +9,15 @@ import {
 } from './PictureEditorButtons';
 import { usePictureEditorContext } from './pictureEditorContext';
 import { NEW_IMAGE } from '../../assets/utils/constants';
-import { useEffect } from 'react';
 
 const ButtonStrip = () => {
-  const {
-    isEditMode,
-    setIsEditMode,
-    setIsConfirmationModalVisible,
-    setIntent,
-  } = usePictureEditorContext();
+  const { isEditMode, setIsEditMode, setIsConfirmationModalVisible } =
+    usePictureEditorContext();
 
   const { pictureId } = useParams();
   const isNewImage = pictureId === NEW_IMAGE;
-
-  useEffect(() => {
-    setIsEditMode(isNewImage);
-    if (isNewImage) {
-      setIntent('create');
-    } else {
-      setIntent('update');
-    }
-  }, [isNewImage, setIntent, setIsEditMode]);
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === 'submitting';
 
   const toggleEdit = () => {
     setIsEditMode(!isEditMode);
@@ -59,7 +47,13 @@ const ButtonStrip = () => {
   return (
     <Wrapper>
       {isEditMode ? (
-        <EditModeButtonStrip />
+        <>
+          {isSubmitting ? (
+            <span className="sending">Enviando...</span>
+          ) : (
+            <EditModeButtonStrip />
+          )}
+        </>
       ) : (
         <EnableEditModeButton toggleEdit={toggleEdit} />
       )}
@@ -73,4 +67,9 @@ const Wrapper = styled.div`
   gap: 1rem;
   align-items: center;
   justify-content: center;
+  min-height: 4rem;
+
+  .sending {
+    font-size: 1.2rem;
+  }
 `;
