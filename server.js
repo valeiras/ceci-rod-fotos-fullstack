@@ -8,10 +8,14 @@ import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 
 // routers
-import authRouter from './routes/authRouter.js';
-import userRouter from './routes/userRouter.js';
-import sectionRouter from './routes/sectionRouter.js';
-import pictureRouter from './routes/pictureRouter.js';
+import {
+  authRouter,
+  userRouter,
+  sectionRouter,
+  sectionByNameRouter,
+  pictureRouter,
+  pictureByNameRouter,
+} from './routes/index.js';
 
 // middleware
 import errorHandlerMiddleware from './middleware/errorHandlerMiddleware.js';
@@ -26,16 +30,6 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(cookieParser());
 app.use(express.json());
-
-// allow cross-origin requests
-app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  );
-  next();
-});
 
 app.use('/api/v1/auth', authRouter);
 
@@ -52,9 +46,21 @@ app.use(
 );
 
 app.use(
+  '/api/v1/sectionsByName',
+  [authenticateUser, authorizePermissions('admin')],
+  sectionByNameRouter
+);
+
+app.use(
   '/api/v1/pictures',
   [authenticateUser, authorizePermissions('admin')],
   pictureRouter
+);
+
+app.use(
+  '/api/v1/picturesByName',
+  [authenticateUser, authorizePermissions('admin')],
+  pictureByNameRouter
 );
 
 app.use('*', (req, res) => {

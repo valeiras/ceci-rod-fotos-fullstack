@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import PictureModel from '../models/PictureModel.js';
+import getFriendlyUrl from '../utils/getFriendlyUrl.js';
 
 export const getAllPictures = async (req, res) => {
   const pictures = await PictureModel.find();
@@ -7,6 +8,7 @@ export const getAllPictures = async (req, res) => {
 };
 
 export const createPicture = async (req, res) => {
+  req.body.friendlyUrlName = getFriendlyUrl(req.body.name);
   const picture = await PictureModel.create(req.body);
   res.status(StatusCodes.CREATED).json({ msg: 'picture created', picture });
 };

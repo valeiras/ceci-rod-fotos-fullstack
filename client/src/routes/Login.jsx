@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 
 import { Form, redirect, useNavigation } from 'react-router-dom';
-import customFetch from '../assets/utils/customFetch';
+import customFetch from '../utils/customFetch';
 import { toast } from 'react-toastify';
 import { LoginFormRow } from '../components';
 

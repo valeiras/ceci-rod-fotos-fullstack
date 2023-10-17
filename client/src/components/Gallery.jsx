@@ -1,4 +1,4 @@
-import { BREAKPOINT } from '../assets/utils/constants';
+import { BREAKPOINT } from '../utils/constants';
 import { useState, useEffect } from 'react';
 import MobileGallery from './MobileGallery';
 import LaptopGallery from './LaptopGallery';

@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import styled from 'styled-components';
 import { SectionSelector } from '../components/admin';
-import customFetch from '../assets/utils/customFetch';
+import customFetch from '../utils/customFetch';
 import { Outlet } from 'react-router-dom';
 import {
   AdminContextProvider,
@@ -64,11 +64,11 @@ const Wrapper = styled.div`
   }
 
   .content-grid {
-    grid-template-columns: 10vw 1fr;
+    grid-template-columns: var(--admin-column-width) 1fr;
   }
 
   .titles-grid {
-    grid-template-columns: 10vw 10vw 1fr;
+    grid-template-columns: var(--admin-column-width) var(--admin-column-width) 1fr;
     margin-bottom: 0.5rem;
   }
 

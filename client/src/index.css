@@ -38,6 +38,7 @@
   --fading-time-2: 1s;
 
   --fixed-width: 600px;
+  --admin-column-width: 150px;
 }
 
 * {
@@ -61,13 +62,11 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  overflow: hidden;
   text-underline-offset: 5px;
 }
 
 body {
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
 }
 
 h1,

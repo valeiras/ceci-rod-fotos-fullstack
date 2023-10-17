@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import styled from 'styled-components';
 import { IoAddCircleOutline } from 'react-icons/io5';
-import { NEW_IMAGE } from '../../assets/utils/constants';
+import { NEW_IMAGE } from '../../utils/constants';
 
 const PictureSelector = () => {
   const pictures = useLoaderData();

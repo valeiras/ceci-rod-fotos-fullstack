@@ -11,8 +11,8 @@ import {
   useParams,
   useRevalidator,
 } from 'react-router-dom';
-import customFetch from '../../assets/utils/customFetch';
-import { NEW_IMAGE } from '../../assets/utils/constants';
+import customFetch from '../../utils/customFetch';
+import { NEW_IMAGE } from '../../utils/constants';
 import { PictureEditorFormRow, ButtonStrip, ImageInput } from '.';
 import { useAdminContext } from './AdminContext';
 import { usePictureEditorContext } from './pictureEditorContext';
@@ -20,7 +20,7 @@ import { usePictureEditorContext } from './pictureEditorContext';
 import ConfirmationModal from '../ConfirmationModal';
 import { pictureProps } from '../../data/pictureData';
 
-import imagekit from '../../assets/utils/imagekit';
+import imagekit from '../../utils/imagekit';
 
 export const loader = async ({ params }) => {
   const { pictureId } = params;
@@ -48,7 +48,6 @@ export const action = async ({ request, params }) => {
     switch (data.intent) {
       case 'create':
         picture = await createNewPicture(data);
-        console.log(picture);
         return redirect(`/admin/${sectionId}/${picture._id}`);
       case 'update':
         return customFetch.patch(`/pictures/${pictureId}`, data);
@@ -69,12 +68,17 @@ const createNewPicture = async (data) => {
 
   try {
     const { data: imagekitAuth } = await customFetch.get('/auth/imagekit');
+    const { data: section } = await customFetch.get(
+      `/sections/${data.sectionId}`
+    );
+    console.log(section);
+
     const imagekitResult = await imagekit.upload({
       file: file.files[0],
-      fileName: `${data.name}.jpg`,
-      token: imagekitAuth.token,
-      signature: imagekitAuth.signature,
-      expire: imagekitAuth.expire,
+      fileName: `${data.name}`,
+      ...imagekitAuth,
+      useUniqueFileName: false,
+      folder: `/ceci-rod-fotos/${section.name}`,
       extensions: [
         {
           name: 'aws-auto-tagging',
@@ -83,14 +87,14 @@ const createNewPicture = async (data) => {
         },
       ],
     });
-    console.log('The result is: ', imagekitResult);
+
     data.url = imagekitResult.url;
     const { data: axiosResult } = await customFetch.post('/pictures', data);
     console.log(axiosResult.picture);
     return axiosResult.picture;
   } catch (error) {
-    console.log('The error is: ', error);
-    throw new Error(err);
+    console.log(error?.message);
+    throw new Error(error?.message);
   }
 };
 

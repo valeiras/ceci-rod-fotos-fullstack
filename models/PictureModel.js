@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 const PictureSchema = new mongoose.Schema({
   name: String,
+  friendlyUrlName: { type: String, index: true },
   model: String,
   lens: String,
   pointF: String,

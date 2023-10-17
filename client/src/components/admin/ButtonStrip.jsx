@@ -8,7 +8,7 @@ import {
   CreateButton,
 } from './PictureEditorButtons';
 import { usePictureEditorContext } from './pictureEditorContext';
-import { NEW_IMAGE } from '../../assets/utils/constants';
+import { NEW_IMAGE } from '../../utils/constants';
 
 const ButtonStrip = () => {
   const { isEditMode, setIsEditMode, setIsConfirmationModalVisible } =

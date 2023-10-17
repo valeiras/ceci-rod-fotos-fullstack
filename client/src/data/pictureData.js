@@ -14,6 +14,6 @@ export const propsToTags = {
   lens: 'Objectivo',
   pointF: 'Pto F',
   iso: 'ISO',
-  exposure: 'Tiempo de exposición',
-  focalDistance: 'Distancia focal',
+  exposure: 'Tiempo de Exposición',
+  focalDistance: 'Distancia Focal',
 };

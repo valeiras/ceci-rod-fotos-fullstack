@@ -12,6 +12,8 @@ import {
 import { PictureEditor } from './components/admin';
 import { PictureEditorContextProvider } from './components/admin/pictureEditorContext';
 
+import StaticUploader from './routes/StaticUploader';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -31,12 +33,16 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     children: [
       {
-        path: ':sectionId',
+        path: 'static_uploader',
+        element: <StaticUploader />,
+      },
+      {
+        path: ':sectionName',
         element: <AdminPictureLayout />,
         loader: picturesLoader,
         children: [
           {
-            path: ':pictureId',
+            path: ':pictureName',
             element: (
               <PictureEditorContextProvider>
                 <PictureEditor />

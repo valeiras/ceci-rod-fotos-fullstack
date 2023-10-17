@@ -25,6 +25,17 @@ const isValidPictureId = async (value) => {
   const picture = await PictureModel.findById(value);
   if (!picture) throw new Error(`no picture with id ${value}`);
 };
+
+const isValidSectionName = async (value) => {
+  const section = await SectionModel.findOne({ friendlyUrlName: value });
+  if (!section) throw new Error(`no section with name ${value}`);
+};
+
+const isValidPictureName = async (value) => {
+  const picture = await PictureModel.findOne({ friendlyUrlName: value });
+  if (!picture) throw new Error(`no picture with name ${value}`);
+};
+
 //  --------------------------------------------------
 
 const withValidationErrors = (validateValues) => {
@@ -98,6 +109,14 @@ export const validateSectionInput = withValidationErrors([
 
 export const validateSectionIdParam = withValidationErrors([
   param('sectionId').custom(isValidSectionId),
+]);
+
+export const validateSectionName = withValidationErrors([
+  param('sectionName').custom(isValidSectionName),
+]);
+
+export const validatePictureName = withValidationErrors([
+  param('pictureName').custom(isValidPictureName),
 ]);
 
 export const validatePictureInput = withValidationErrors([
