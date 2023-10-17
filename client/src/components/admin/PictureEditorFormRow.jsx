@@ -2,12 +2,15 @@
 import styled from 'styled-components';
 import { propsToTags } from '../../data/pictureData';
 import { useEffect, useState } from 'react';
+import { usePictureEditorContext } from './pictureEditorContext';
 
 const PictureEditorFormRow = ({ name, initialValue, isDisabled }) => {
   const [value, setValue] = useState(initialValue);
+  const { isFormReset } = usePictureEditorContext();
+
   useEffect(() => {
     setValue(initialValue);
-  }, [initialValue]);
+  }, [initialValue, isFormReset]);
 
   return (
     <Wrapper className="form-row">

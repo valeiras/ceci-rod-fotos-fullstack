@@ -13,7 +13,13 @@ import {
 
 const SubmitButton = ({ icon, intent }) => {
   return (
-    <button className="btn edit-btn" type="submit" name="intent" value={intent}>
+    <button
+      className="btn edit-btn"
+      type="submit"
+      name="intent"
+      value={intent}
+      title="Guardar cambios"
+    >
       {icon}
     </button>
   );
@@ -41,57 +47,76 @@ const DeleteButton = ({ setIsConfirmationModalVisible }) => {
       onClick={() => {
         setIsConfirmationModalVisible(true);
       }}
+      title="Eliminar imagen"
     >
       <AiFillDelete />
     </button>
   );
 };
 
-const EnableEditModeButton = ({ toggleEdit }) => {
+const EnableEditModeButton = ({ enableEditMode }) => {
   return (
-    <button className="btn edit-btn" onClick={toggleEdit}>
+    <button
+      className="btn edit-btn"
+      onClick={enableEditMode}
+      title="Editar imagen"
+    >
       <AiFillEdit />
     </button>
   );
 };
 
-const DisableEditButton = ({ toggleEdit }) => {
+const DisableEditButton = ({ disableEditMode }) => {
   return (
-    <button className="btn edit-btn" onClick={toggleEdit}>
+    <button
+      className="btn edit-btn"
+      onClick={disableEditMode}
+      title="Descartar cambios"
+    >
       <AiFillCloseCircle />
     </button>
   );
 };
 
 const ButtonStrip = () => {
-  const { isEditMode, setIsEditMode, setIsConfirmationModalVisible } =
-    usePictureEditorContext();
+  const {
+    isEditMode,
+    setIsEditMode,
+    setIsFormReset,
+    setIsConfirmationModalVisible,
+  } = usePictureEditorContext();
 
   const { pictureName } = useParams();
   const isNewImage = pictureName === NEW_IMAGE;
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
 
-  const toggleEdit = () => {
-    setIsEditMode(!isEditMode);
+  const enableEditMode = () => {
+    setIsFormReset(false);
+    setIsEditMode(true);
+  };
+
+  const disableEditMode = () => {
+    setIsEditMode(false);
+    setIsFormReset(true);
   };
 
   const EditModeButtonStrip = () => {
     if (isNewImage) {
       return (
         <>
-          <CreateButton setIsEditMode={setIsEditMode} />
-          <DisableEditButton toggleEdit={toggleEdit} />
+          <CreateButton title="Crear nueva imagen" />
+          <DisableEditButton disableEditMode={disableEditMode} />
         </>
       );
     } else {
       return (
         <>
-          <UpdateButton setIsEditMode={setIsEditMode} />
+          <UpdateButton />
           <DeleteButton
             setIsConfirmationModalVisible={setIsConfirmationModalVisible}
           />
-          <DisableEditButton toggleEdit={toggleEdit} />
+          <DisableEditButton disableEditMode={disableEditMode} />
         </>
       );
     }
@@ -100,15 +125,18 @@ const ButtonStrip = () => {
   return (
     <Wrapper>
       {isEditMode ? (
+        <EditModeButtonStrip />
+      ) : (
         <>
           {isSubmitting ? (
-            <span className="sending">Enviando...</span>
+            <div className="loading-container">
+              <span className="sending">Enviando...</span>
+              <div className="tiny-loading"></div>
+            </div>
           ) : (
-            <EditModeButtonStrip />
+            <EnableEditModeButton enableEditMode={enableEditMode} />
           )}
         </>
-      ) : (
-        <EnableEditModeButton toggleEdit={toggleEdit} />
       )}
     </Wrapper>
   );
@@ -124,5 +152,11 @@ const Wrapper = styled.div`
 
   .sending {
     font-size: 1.2rem;
+  }
+
+  .loading-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
 `;

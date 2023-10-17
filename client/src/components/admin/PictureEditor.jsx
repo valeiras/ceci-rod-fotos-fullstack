@@ -115,6 +115,7 @@ const updatePicture = async (data, pictureId) => {
     `/pictures/${pictureId}`,
     data
   );
+  toast.success(`'${axiosResult.updatedPicture.name}' actualizada con éxito`);
   return axiosResult.updatedPicture;
 };
 
@@ -126,7 +127,6 @@ const PictureEditor = () => {
     setIsEditMode,
     isNewPicture,
     setIsNewPicture,
-    hasPictureFile,
     setHasPictureFile,
   } = usePictureEditorContext();
   const { sectionName } = useParams();
@@ -136,6 +136,7 @@ const PictureEditor = () => {
   const picture = useLoaderData();
 
   const { url, name } = picture;
+  const navigation = useNavigation();
 
   useEffect(() => {
     setCurrentPictureName(name);
@@ -151,8 +152,11 @@ const PictureEditor = () => {
     url,
   ]);
 
-  const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
+
+  useEffect(() => {
+    setIsEditMode(false);
+  }, [isSubmitting]);
 
   const deletePicture = async () => {
     try {
@@ -200,15 +204,19 @@ const PictureEditor = () => {
         </div>
 
         <div className="right-column">
-          <IKImage
-            urlEndpoint={urlEndpoint}
-            src={url}
-            transformation={[
-              {
-                width: 412,
-              },
-            ]}
-          />
+          {isNewPicture ? (
+            <img src="" alt="" id="image-preview" />
+          ) : (
+            <IKImage
+              urlEndpoint={urlEndpoint}
+              src={url}
+              transformation={[
+                {
+                  width: 412,
+                },
+              ]}
+            />
+          )}
           {isEditMode && isNewPicture && <ImageInput />}
         </div>
       </Form>

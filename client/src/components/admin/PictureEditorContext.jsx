@@ -10,6 +10,7 @@ export const PictureEditorContextProvider = ({ children }) => {
   const [isConfirmationModalVisible, setIsConfirmationModalVisible] =
     useState(false);
   const [hasPictureFile, setHasPictureFile] = useState(false);
+  const [isFormReset, setIsFormReset] = useState(false);
 
   return (
     <PictureEditorContext.Provider
@@ -20,6 +21,8 @@ export const PictureEditorContextProvider = ({ children }) => {
         setHasPictureFile,
         isNewPicture,
         setIsNewPicture,
+        isFormReset,
+        setIsFormReset,
         isConfirmationModalVisible,
         setIsConfirmationModalVisible,
       }}
