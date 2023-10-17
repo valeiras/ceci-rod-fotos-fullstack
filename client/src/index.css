@@ -761,11 +761,14 @@ Loading
   font-weight: 600;
   display: inline-block;
 }
+
+label.btn:hover,
 .btn:not(.invisible-btn):enabled:hover {
   background: var(--color-2);
   color: white;
   box-shadow: var(--shadow-3);
 }
+
 .btn-block {
   width: 100%;
 }

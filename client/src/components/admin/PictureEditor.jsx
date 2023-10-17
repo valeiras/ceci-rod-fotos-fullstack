@@ -121,6 +121,7 @@ const PictureEditor = () => {
     setIsConfirmationModalVisible,
     isEditMode,
     setIsEditMode,
+    isNewPicture,
     setIsNewPicture,
     hasPictureFile,
     setHasPictureFile,
@@ -201,7 +202,7 @@ const PictureEditor = () => {
             id="image-preview"
             className={hasPictureFile ? '' : 'hidden'}
           />
-          {isEditMode && <ImageInput />}
+          {isEditMode && isNewPicture && <ImageInput />}
         </div>
       </Form>
     </Wrapper>

@@ -5,8 +5,7 @@ import { useEffect } from 'react';
 
 // eslint-disable-next-line react/prop-types
 const ImageInput = () => {
-  const { isNewPicture, hasPictureFile, setHasPictureFile } =
-    usePictureEditorContext();
+  const { hasPictureFile, setHasPictureFile } = usePictureEditorContext();
 
   useEffect(() => {
     document.getElementById('file-upload').value = '';
@@ -33,24 +32,14 @@ const ImageInput = () => {
         </span>
         {hasPictureFile ? 'Actualizar imagen' : 'Subir imagen'}
       </label>
-      {isNewPicture ? (
-        <input
-          id="file-upload"
-          name="imgFile"
-          type="file"
-          accept=".jpg, .jpeg, .png"
-          onChange={handleImageInput}
-          required
-        />
-      ) : (
-        <input
-          id="file-upload"
-          name="imgFile"
-          type="file"
-          accept=".jpg, .jpeg, .png"
-          onChange={handleImageInput}
-        />
-      )}
+      <input
+        id="file-upload"
+        name="imgFile"
+        type="file"
+        accept=".jpg, .jpeg, .png"
+        onChange={handleImageInput}
+        required
+      />
     </Wrapper>
   );
 };
@@ -83,6 +72,7 @@ const Wrapper = styled.div`
     width: fit-content;
     margin: 1.5rem auto 0;
   }
+
   .upload-icon {
     font-size: 1.2rem;
     display: flex;
