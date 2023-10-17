@@ -21,7 +21,10 @@ import { usePictureEditorContext } from './pictureEditorContext';
 import ConfirmationModal from '../ConfirmationModal';
 import { pictureProps } from '../../data/pictureData';
 
+import { IKImage } from 'imagekitio-react';
+import 'regenerator-runtime';
 import imagekit from '../../utils/imagekit';
+const { urlEndpoint } = 'https://ik.imagekit.io/lyhvtcigz/';
 
 export const loader = async ({ params }) => {
   const { sectionName, pictureName } = params;
@@ -197,10 +200,14 @@ const PictureEditor = () => {
         </div>
 
         <div className="right-column">
-          <img
+          <IKImage
+            urlEndpoint={urlEndpoint}
             src={url}
-            id="image-preview"
-            className={hasPictureFile ? '' : 'hidden'}
+            transformation={[
+              {
+                width: 412,
+              },
+            ]}
           />
           {isEditMode && isNewPicture && <ImageInput />}
         </div>

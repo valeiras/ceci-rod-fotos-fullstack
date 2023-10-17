@@ -15,6 +15,7 @@ import {
   sectionByNameRouter,
   pictureRouter,
   pictureByNameRouter,
+  staticAssetsRouter,
 } from './routes/index.js';
 
 // middleware
@@ -61,6 +62,12 @@ app.use(
   '/api/v1/picturesByName',
   [authenticateUser, authorizePermissions('admin')],
   pictureByNameRouter
+);
+
+app.use(
+  '/api/v1/uploadStaticAssets',
+  [authenticateUser, authorizePermissions('admin')],
+  staticAssetsRouter
 );
 
 app.use('*', (req, res) => {

@@ -4,3 +4,4 @@ export { default as pictureByNameRouter } from './pictureByNameRouter.js';
 export { default as sectionRouter } from './sectionRouter.js';
 export { default as sectionByNameRouter } from './sectionByNameRouter.js';
 export { default as userRouter } from './userRouter.js';
+export { default as staticAssetsRouter } from './staticAssetsRouter.js';

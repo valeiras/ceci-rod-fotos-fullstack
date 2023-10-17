@@ -28,14 +28,7 @@ export const deletePicture = async (req, res) => {
     privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
   });
 
-  await imagekit
-    .deleteFile(picture.imagekitId)
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  await imagekit.deleteFile(picture.imagekitId).then(() => {});
 
   const deletedPicture = await PictureModel.findByIdAndDelete(
     req.params.pictureId

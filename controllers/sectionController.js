@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import SectionModel from '../models/SectionModel.js';
 import PictureModel from '../models/PictureModel.js';
 import getFriendlyUrl from '../utils/getFriendlyUrl.js';
+import ImageKit from 'imagekit';
 
 export const getAllSections = async (req, res) => {
   const sections = await SectionModel.find();
@@ -32,6 +33,22 @@ export const updateSection = async (req, res) => {
 };
 
 export const deleteSection = async (req, res) => {
+  const imagekit = new ImageKit({
+    urlEndpoint: process.env.IMAGEKIT_URL,
+    publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+    privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+  });
+
+  const section = await SectionModel.findById(req.params.sectionId);
+  await imagekit
+    .deleteFolder(`/ceci-rod-fotos/${section.friendlyUrlName}`)
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
   const pictures = await PictureModel.find({ sectionId: req.params.sectionId });
   const deletedPictures = [];
 
