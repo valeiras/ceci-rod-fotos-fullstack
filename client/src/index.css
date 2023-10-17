@@ -38,7 +38,7 @@
   --fading-time-2: 1s;
 
   --fixed-width: 600px;
-  --admin-column-width: 150px;
+  --admin-column-width: clamp(150px, 10vw, 250px);
 }
 
 * {

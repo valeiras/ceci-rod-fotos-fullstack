@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import PictureModel from '../models/PictureModel.js';
 
 export const getPictureByName = async (req, res) => {
-  const picture = await PictureModel.find({
+  const picture = await PictureModel.findOne({
     friendlyUrlName: req.params.pictureName,
   });
   res.status(StatusCodes.OK).json(picture);

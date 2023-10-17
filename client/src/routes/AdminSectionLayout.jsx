@@ -5,20 +5,27 @@ import customFetch from '../utils/customFetch';
 import { Outlet } from 'react-router-dom';
 
 export const loader = async ({ params }) => {
-  const { sectionId } = params;
-  const { data } = await customFetch(`/sections/${sectionId}/pictures`);
-  return data.pictures;
+  const { sectionName } = params;
+  console.log(sectionName);
+  const { data: sectionData } = await customFetch(
+    `/sectionsByName/${sectionName}`
+  );
+  console.log(sectionData);
+  const { data: picturesData } = await customFetch(
+    `/sections/${sectionData._id}/pictures`
+  );
+  return picturesData.pictures;
 };
 
-const AdminPictureLayout = () => {
+const AdminSectionLayout = () => {
   return (
-    <Wrapper className="AdminPictureLayout">
+    <Wrapper className="AdminSectionLayout">
       <PictureSelector />
       <Outlet />
     </Wrapper>
   );
 };
-export default AdminPictureLayout;
+export default AdminSectionLayout;
 
 const Wrapper = styled.div`
   display: grid;

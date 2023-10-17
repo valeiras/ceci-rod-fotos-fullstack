@@ -1,9 +1,9 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { Home, AdminLayout, AdminPictureLayout, Login, Error } from './routes';
+import { Home, AdminLayout, AdminSectionLayout, Login, Error } from './routes';
 import { action as loginAction } from './routes/Login';
 
-import { loader as sectionsLoader } from './routes/AdminLayout';
-import { loader as picturesLoader } from './routes/AdminPictureLayout';
+import { loader as menuLoader } from './routes/AdminLayout';
+import { loader as sectionLoader } from './routes/AdminSectionLayout';
 import {
   loader as singlePictureLoader,
   action as pictureEditorAction,
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
   {
     path: '/admin',
     element: <AdminLayout />,
-    loader: sectionsLoader,
+    loader: menuLoader,
     errorElement: <Error />,
     children: [
       {
@@ -38,8 +38,8 @@ const router = createBrowserRouter([
       },
       {
         path: ':sectionName',
-        element: <AdminPictureLayout />,
-        loader: picturesLoader,
+        element: <AdminSectionLayout />,
+        loader: sectionLoader,
         children: [
           {
             path: ':pictureName',

@@ -10,10 +10,10 @@ const SectionSelector = () => {
 
   return (
     <Wrapper>
-      {sections.map(({ name, _id }) => {
+      {sections.map(({ name, friendlyUrlName, _id }) => {
         return (
           <NavLink
-            to={_id}
+            to={friendlyUrlName}
             key={_id}
             className="nav-link"
             style={{ marginRight: 0 }}

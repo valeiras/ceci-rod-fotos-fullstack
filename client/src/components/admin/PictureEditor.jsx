@@ -23,15 +23,15 @@ import { pictureProps } from '../../data/pictureData';
 import imagekit from '../../utils/imagekit';
 
 export const loader = async ({ params }) => {
-  const { pictureId } = params;
+  const { pictureName } = params;
   let picture;
-  if (pictureId === NEW_IMAGE) {
+  if (pictureName === NEW_IMAGE) {
     picture = {
       name: 'Nueva imagen',
       url: null,
     };
   } else {
-    const { data } = await customFetch(`pictures/${pictureId}`);
+    const { data } = await customFetch(`picturesByName/${pictureName}`);
     picture = data;
   }
   return picture;

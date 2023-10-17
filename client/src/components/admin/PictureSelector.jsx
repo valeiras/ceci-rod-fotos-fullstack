@@ -19,10 +19,10 @@ const PictureSelector = () => {
 
   return (
     <Wrapper>
-      {pictures.map(({ name, _id }) => {
+      {pictures.map(({ name, friendlyUrlName, _id }) => {
         return (
           <NavLink
-            to={_id}
+            to={friendlyUrlName}
             key={_id}
             className="nav-link"
             style={{ marginRight: 0 }}
