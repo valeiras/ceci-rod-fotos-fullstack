@@ -11,10 +11,10 @@ import { NEW_IMAGE } from '../../utils/constants';
 const PictureSelector = () => {
   const pictures = useLoaderData();
   const navigate = useNavigate();
-  const { sectionId } = useParams();
+  const { sectionName } = useParams();
 
   const createNewPicture = () => {
-    navigate(`/admin/${sectionId}/${NEW_IMAGE}`);
+    navigate(`/admin/${sectionName}/${NEW_IMAGE}`);
   };
 
   return (

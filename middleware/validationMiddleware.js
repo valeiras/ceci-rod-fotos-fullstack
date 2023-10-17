@@ -128,6 +128,7 @@ export const validatePictureInput = withValidationErrors([
   body('exposure').notEmpty().withMessage('exposure is required'),
   body('focalDistance').notEmpty().withMessage('focalDistance is required'),
   body('url').notEmpty().withMessage('url is required'),
+  body('imagekitId').notEmpty().withMessage('imagekit id is required'),
   body('sectionId')
     .notEmpty()
     .withMessage('section is required')

@@ -14,6 +14,7 @@ const PictureSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: 'Section',
   },
+  imagekitId: String,
 });
 
 export default mongoose.model('Picture', PictureSchema);

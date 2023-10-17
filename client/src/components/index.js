@@ -6,6 +6,7 @@ import MobileGallery from './MobileGallery';
 import FullPageImage from './FullPageImage';
 import LoginFormRow from './LoginFormRow';
 import ImageInfo from './ImageInfo';
+import ConfirmationModal from './ConfirmationModal';
 
 export {
   Sidebar,
@@ -16,4 +17,5 @@ export {
   FullPageImage,
   ImageInfo,
   LoginFormRow,
+  ConfirmationModal,
 };

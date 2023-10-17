@@ -8,6 +8,7 @@ import {
   redirect,
   useLoaderData,
   useNavigate,
+  useNavigation,
   useParams,
   useRevalidator,
 } from 'react-router-dom';
@@ -23,11 +24,15 @@ import { pictureProps } from '../../data/pictureData';
 import imagekit from '../../utils/imagekit';
 
 export const loader = async ({ params }) => {
-  const { pictureName } = params;
+  const { sectionName, pictureName } = params;
   let picture;
   if (pictureName === NEW_IMAGE) {
+    const { data: section } = await customFetch(
+      `sectionsByName/${sectionName}`
+    );
     picture = {
       name: 'Nueva imagen',
+      sectionId: section._id,
       url: null,
     };
   } else {
@@ -39,18 +44,21 @@ export const loader = async ({ params }) => {
 
 export const action = async ({ request, params }) => {
   const formData = await request.formData();
-  const { sectionId, pictureId } = params;
+  const { sectionName } = params;
+
   const data = Object.fromEntries(formData);
-  data.sectionId = sectionId;
+  const pictureId = data.pictureId;
+  delete data.pictureId;
   let picture;
 
   try {
     switch (data.intent) {
       case 'create':
         picture = await createNewPicture(data);
-        return redirect(`/admin/${sectionId}/${picture._id}`);
+        break;
       case 'update':
-        return customFetch.patch(`/pictures/${pictureId}`, data);
+        picture = await updatePicture(data, pictureId);
+        break;
       default:
         break;
     }
@@ -60,7 +68,7 @@ export const action = async ({ request, params }) => {
     return error;
   }
 
-  return null;
+  return redirect(`/admin/${sectionName}/${picture.friendlyUrlName}`);
 };
 
 const createNewPicture = async (data) => {
@@ -71,14 +79,13 @@ const createNewPicture = async (data) => {
     const { data: section } = await customFetch.get(
       `/sections/${data.sectionId}`
     );
-    console.log(section);
 
     const imagekitResult = await imagekit.upload({
       file: file.files[0],
       fileName: `${data.name}`,
       ...imagekitAuth,
       useUniqueFileName: false,
-      folder: `/ceci-rod-fotos/${section.name}`,
+      folder: `/ceci-rod-fotos/${section.friendlyUrlName}`,
       extensions: [
         {
           name: 'aws-auto-tagging',
@@ -89,13 +96,23 @@ const createNewPicture = async (data) => {
     });
 
     data.url = imagekitResult.url;
+    data.imagekitId = imagekitResult.fileId;
+
     const { data: axiosResult } = await customFetch.post('/pictures', data);
-    console.log(axiosResult.picture);
+    toast.success(`'${axiosResult.picture.name}' creada con éxito`);
     return axiosResult.picture;
   } catch (error) {
     console.log(error?.message);
     throw new Error(error?.message);
   }
+};
+
+const updatePicture = async (data, pictureId) => {
+  const { data: axiosResult } = await customFetch.patch(
+    `/pictures/${pictureId}`,
+    data
+  );
+  return axiosResult.updatedPicture;
 };
 
 const PictureEditor = () => {
@@ -108,7 +125,7 @@ const PictureEditor = () => {
     hasPictureFile,
     setHasPictureFile,
   } = usePictureEditorContext();
-  const { pictureId, sectionId } = useParams();
+  const { sectionName } = useParams();
   const { setCurrentPictureName } = useAdminContext();
   const navigate = useNavigate();
   const revalidator = useRevalidator();
@@ -130,12 +147,15 @@ const PictureEditor = () => {
     url,
   ]);
 
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === 'submitting';
+
   const deletePicture = async () => {
     try {
-      const { data } = await customFetch.delete(`/pictures/${pictureId}`);
+      const { data } = await customFetch.delete(`/pictures/${picture._id}`);
       setIsConfirmationModalVisible(false);
       setCurrentPictureName('');
-      navigate(`/admin/${sectionId}`);
+      navigate(`/admin/${sectionName}`);
       revalidator.revalidate();
       toast.success(`'${data.picture.name}' eliminada`);
     } catch (error) {
@@ -159,6 +179,8 @@ const PictureEditor = () => {
         }}
       />
       <Form className="form grid-layout" method="post">
+        <input type="hidden" name="sectionId" value={picture.sectionId || ''} />
+        <input type="hidden" name="pictureId" value={picture._id || ''} />
         <div className="left-column">
           {pictureProps.map((prop) => {
             return (
@@ -166,7 +188,7 @@ const PictureEditor = () => {
                 key={prop}
                 name={prop}
                 initialValue={picture[prop] || ''}
-                isDisabled={!isEditMode}
+                isDisabled={!isEditMode || isSubmitting}
               />
             );
           })}

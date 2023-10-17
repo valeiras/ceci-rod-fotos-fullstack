@@ -6,11 +6,9 @@ import { Outlet } from 'react-router-dom';
 
 export const loader = async ({ params }) => {
   const { sectionName } = params;
-  console.log(sectionName);
   const { data: sectionData } = await customFetch(
     `/sectionsByName/${sectionName}`
   );
-  console.log(sectionData);
   const { data: picturesData } = await customFetch(
     `/sections/${sectionData._id}/pictures`
   );

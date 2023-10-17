@@ -7,9 +7,11 @@ const ConfirmationModal = ({
   acceptTag,
   rejectTag,
   onAccept,
-  onReject,
   isVisible,
   setIsVisible,
+  onReject = () => {
+    setIsVisible(false);
+  },
 }) => {
   const closeModal = () => {
     const scrollY = document.body.style.top;

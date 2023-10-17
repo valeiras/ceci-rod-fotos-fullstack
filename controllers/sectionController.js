@@ -20,12 +20,15 @@ export const getSection = async (req, res) => {
 };
 
 export const updateSection = async (req, res) => {
+  req.body.friendlyUrlName = getFriendlyUrl(req.body.name);
   const updatedSection = await SectionModel.findByIdAndUpdate(
     req.params.sectionId,
-    { name: req.body.name },
+    req.body,
     { new: true }
   );
-  res.status(StatusCodes.OK).json(updatedSection);
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: 'section updated', section: updatedSection });
 };
 
 export const deleteSection = async (req, res) => {

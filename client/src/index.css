@@ -761,7 +761,7 @@ Loading
   font-weight: 600;
   display: inline-block;
 }
-.btn:not(.invisible-btn):hover {
+.btn:not(.invisible-btn):enabled:hover {
   background: var(--color-2);
   color: white;
   box-shadow: var(--shadow-3);
@@ -769,8 +769,11 @@ Loading
 .btn-block {
   width: 100%;
 }
+
 button:disabled {
-  cursor: wait;
+  cursor: auto;
+  background-color: var(--color-1);
+  color: var(--color-dark);
 }
 
 .invisible-btn {
@@ -784,6 +787,9 @@ button:disabled {
   margin-top: 1rem;
 }
 
+.md-btn {
+  font-size: 1.2rem;
+}
 .add-btn:hover {
   transform: scale(1.05);
 }

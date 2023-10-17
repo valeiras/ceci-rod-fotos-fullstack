@@ -45,7 +45,6 @@ export const authenticateImageKit = (req, res) => {
     publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
     privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
   });
-
   const result = imagekit.getAuthenticationParameters();
   res.send(result);
 };
