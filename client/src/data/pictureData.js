@@ -9,11 +9,11 @@ export const pictureProps = [
 ];
 
 export const propsToTags = {
-  name: 'nombre',
+  name: 'Nombre',
   model: 'Modelo de cámara',
   lens: 'Objectivo',
   pointF: 'Pto F',
   iso: 'ISO',
-  exposure: 'Tiempo de Exposición',
-  focalDistance: 'Distancia Focal',
+  exposure: 'Tiempo de exposición',
+  focalDistance: 'Distancia focal',
 };

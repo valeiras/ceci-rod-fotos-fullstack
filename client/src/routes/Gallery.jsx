@@ -24,15 +24,9 @@ export const loader = async ({ params }) => {
 };
 
 const Gallery = () => {
-  const [width, setWidth] = useState(window.innerWidth);
   const { sectionName } = useParams();
   const { setCurrPictureIdx } = useOutletContext();
-
-  useEffect(() => {
-    const handleWindowResize = () => setWidth(window.innerWidth);
-    window.addEventListener('resize', handleWindowResize);
-    return () => window.removeEventListener('resize', handleWindowResize);
-  }, []);
+  const { width } = useOutletContext();
 
   useEffect(() => {
     setCurrPictureIdx(0);

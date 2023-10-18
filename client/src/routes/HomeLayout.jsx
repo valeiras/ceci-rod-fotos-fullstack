@@ -3,7 +3,7 @@
 import '../App.css';
 import { Navbar, FullPagePicture } from '../components';
 import { Outlet } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import customFetch from '../utils/customFetch';
 
 export const loader = async () => {
@@ -19,6 +19,17 @@ const HomeLayout = () => {
   const [showFullPage, setShowFullPage] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [currPictureIdx, setCurrPictureIdx] = useState(0);
+  const [width, setWidth] = useState(window.innerWidth);
+  const [height, setHeight] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWidth(window.innerWidth);
+      setHeight(window.innerHeight);
+    };
+    window.addEventListener('resize', handleWindowResize);
+    return () => window.removeEventListener('resize', handleWindowResize);
+  }, []);
 
   return (
     <div className="app">
@@ -33,6 +44,8 @@ const HomeLayout = () => {
           setCurrPictureIdx,
           isLoading,
           setIsLoading,
+          width,
+          height,
         }}
       />
       {showFullPage && <FullPagePicture />}

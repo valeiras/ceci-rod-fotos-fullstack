@@ -2,84 +2,68 @@
 import styled from 'styled-components';
 import { useRef } from 'react';
 import PictureInfo from './PictureInfo';
-import {
-  useLoaderData,
-  useNavigation,
-  useOutletContext,
-} from 'react-router-dom';
+import { useLoaderData, useOutletContext } from 'react-router-dom';
 import { IKImage } from 'imagekitio-react';
 
 const PictureStrip = () => {
-  const { currPictureIdx, setShowImageInfo, isLoading, setIsLoading } =
-    useOutletContext();
+  const {
+    currPictureIdx,
+    showPictureInfo,
+    setShowPictureInfo,
+    isLoading,
+    setIsLoading,
+    height,
+    setShowFullPage,
+  } = useOutletContext();
   const { currSectionPictures } = useLoaderData();
-  const containerRef = useRef(null);
-  const imgRef = useRef(null);
+  const picRef = useRef(null);
 
   const handleMouseLeave = (evt) => {
-    const img = imgRef.current;
-    const { left, right, bottom, top } = img.getBoundingClientRect();
+    const pic = picRef.current;
+    const { left, right, bottom, top } = pic.getBoundingClientRect();
     const { clientX, clientY } = evt;
-
     if (
       clientX < left + 1 ||
       clientX > right - 1 ||
       clientY > bottom - 1 ||
       clientY < top + 1
     ) {
-      setShowImageInfo(false);
+      setShowPictureInfo(false);
     }
   };
 
   return (
     <div className="image-strip">
-      {currSectionPictures.map(({ name, _id, info, url }, picIdx) => {
+      {currSectionPictures.map((currPicture, picIdx) => {
         return (
           <Wrapper
             className="corner-border"
-            ref={containerRef}
-            key={_id}
+            key={currPicture._id}
             style={{
               opacity: !isLoading & (currPictureIdx === picIdx) ? '1' : '0',
             }}
+            ref={picRef}
+            onClick={() => {
+              setShowFullPage(true);
+              setShowPictureInfo(false);
+            }}
+            onMouseEnter={() => {
+              setShowPictureInfo(true);
+            }}
+            onMouseLeave={handleMouseLeave}
           >
             <IKImage
-              src={url}
+              src={currPicture.url}
               className="gallery-pic"
-              transformation={[{ height: 800 }]}
+              transformation={[{ height: 0.7 * height }]}
               lqip={{ active: true, quality: 10, blur: 10 }}
               onLoad={() => {
                 setIsLoading(false);
               }}
             />
-            {/* {picIdx === currPictureIdx ? (
-              <ProgressiveImage src={pathMd} placeholder={pathTy}>
-                {(src, loading) => {
-                  return imgIdx === currPictureIdx ? (
-                    <img
-                      src={src}
-                      alt={name}
-                      className="gallery-img"
-                      ref={imgRef}
-                      style={{
-                        filter: loading ? 'blur(2px)' : 'none',
-                        opacity: isImageChanging ? '0' : '1',
-                      }}
-                      onClick={() => {
-                        setShowFullPage(true);
-                        setShowImageInfo(false);
-                      }}
-                      onMouseEnter={() => {
-                        setShowImageInfo(true);
-                      }}
-                      onMouseLeave={handleMouseLeave}
-                      onLoad={handleImageLoad}
-                    />
-                  ) : null;
-                }}
-              </ProgressiveImage>
-            ) : null}
-            {showImageInfo && info && <PictureInfo info={info} />} */}
+            {showPictureInfo && currPicture && (
+              <PictureInfo info={currPicture} />
+            )}
           </Wrapper>
         );
       })}

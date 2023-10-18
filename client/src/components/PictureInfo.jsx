@@ -1,11 +1,12 @@
 import { nanoid } from 'nanoid';
 import { GoX } from 'react-icons/go';
 import { useOutletContext } from 'react-router-dom';
+import { pictureProps, propsToTags } from '../data/pictureData';
 
 /* eslint-disable react/prop-types */
 const PictureInfo = ({ info }) => {
-  const { showFullPage, setShowImageInfo } = useOutletContext();
-  const infoArray = Array.from(Object.entries(info));
+  const { showFullPage, setShowPictureInfo } = useOutletContext();
+
   return (
     <div
       className="image-info"
@@ -15,13 +16,12 @@ const PictureInfo = ({ info }) => {
         <GoX
           className="close-info-btn"
           onClick={() => {
-            setShowImageInfo(false);
+            setShowPictureInfo(false);
           }}
         />
       )}
-      {infoArray.map((item) => {
-        let [key, value] = item;
-        return <p key={nanoid()}>{`${key}: ${value}`}</p>;
+      {pictureProps.map((prop) => {
+        return <p key={nanoid()}>{`${propsToTags[prop]}: ${info[prop]}`}</p>;
       })}
     </div>
   );
