@@ -57,6 +57,7 @@ const PictureStrip = () => {
               className="gallery-pic"
               transformation={[{ height: 0.7 * height }]}
               lqip={{ active: true, quality: 10, blur: 10 }}
+              loading="lazy"
               onLoad={() => {
                 setIsLoading(false);
               }}

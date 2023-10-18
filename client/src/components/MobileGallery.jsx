@@ -1,79 +1,94 @@
 /* eslint-disable react/prop-types */
-import ProgressiveImage from 'react-progressive-graceful-image';
-import { useOutletContext } from 'react-router-dom';
+import styled from 'styled-components';
+import {
+  useLoaderData,
+  useNavigation,
+  useOutletContext,
+} from 'react-router-dom';
+import { IKImage } from 'imagekitio-react';
 
 const MobileGallery = () => {
-  const {
-    currSection,
-    setImageById,
-    isSectionChanging,
-    setIsSectionChanging,
-    showLinks,
-    setShowFullPage,
-  } = useOutletContext();
+  const { setCurrPictureIdx, isLoading, setIsLoading, setShowFullPage, width } =
+    useOutletContext();
+  const { currSection, currSectionPictures } = useLoaderData();
 
-  const handleMobileGalleryClick = (imageId) => {
-    setImageById(imageId);
+  const handleMobileGalleryClick = (picIdx) => {
+    setCurrPictureIdx(picIdx);
     setShowFullPage(true);
   };
+  const navigation = useNavigation();
+  console.log(navigation.state);
 
-  const handleImageLoad = () => {
-    if (isSectionChanging) {
-      setIsSectionChanging(false);
-    }
-  };
-
+  console.log(isLoading);
   return (
-    <section className="mobile-gallery">
-      <h4
-        className="mobile-title"
-        style={
-          showLinks || isSectionChanging
-            ? { opacity: '0%' }
-            : { opacity: '100%' }
-        }
-      >
+    <Wrapper className="MobileGallery">
+      <h4 className="mobile-title" style={{ opacity: isLoading ? '0' : '1' }}>
         {currSection.name}:
       </h4>
-      {isSectionChanging && (
-        <div
-          className="loading"
-          style={{
-            opacity: isSectionChanging ? 1 : 0,
-          }}
-        ></div>
-      )}
-      <div className="mobile-img-container">
-        {currSection.imgs.map((img) => {
+      {isLoading && <div className="loading"></div>}
+      <div
+        className="mobile-pic-container"
+        style={{ opacity: isLoading ? '0' : '1' }}
+      >
+        {currSectionPictures.map(({ url, _id }, picIdx) => {
           return (
-            <ProgressiveImage
-              src={img.pathMd}
-              placeholder={img.pathTy}
-              key={img.id}
-            >
-              {(src, loading) => {
-                return (
-                  <img
-                    src={src}
-                    alt={img.name}
-                    className="mobile-img corner-border"
-                    style={{
-                      filter: loading ? 'blur(2px)' : 'none',
-                      opacity: isSectionChanging ? 0 : 1,
-                    }}
-                    onClick={() => {
-                      handleMobileGalleryClick(img.id);
-                    }}
-                    onLoad={handleImageLoad}
-                  />
-                );
+            <IKImage
+              src={url}
+              transformation={[{ width: 0.9 * width }]}
+              key={_id}
+              onClick={() => {
+                handleMobileGalleryClick(picIdx);
               }}
-            </ProgressiveImage>
+              onLoad={() => {
+                setIsLoading(false);
+              }}
+              lqip={{ active: true, quality: 10, blur: 10 }}
+              loading="lazy"
+            />
           );
         })}
       </div>
-    </section>
+    </Wrapper>
   );
 };
 
 export default MobileGallery;
+
+const Wrapper = styled.section`
+  height: 100%;
+  width: 90%;
+  max-width: 600px;
+  transition: var(--transition);
+  display: flex;
+  flex-flow: column nowrap;
+  padding-bottom: 25px;
+  gap: 10px;
+  overflow: auto;
+  scroll-behavior: smooth;
+
+  .mobile-title {
+    color: var(--color-3);
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    transition: var(--slow-transition);
+  }
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+
+  .mobile-pic-container {
+    transition: var(--slow-transition);
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .mobile-pic {
+    transition: var(--slow-transition);
+    cursor: pointer;
+    width: 100%;
+    height: auto;
+  }
+`;

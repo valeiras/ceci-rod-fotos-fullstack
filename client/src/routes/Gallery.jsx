@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { BREAKPOINT } from '../utils/constants';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import MobileGallery from '../components/MobileGallery';
 import LaptopGallery from '../components/LaptopGallery';
 import Sidebar from '../components/Sidebar';

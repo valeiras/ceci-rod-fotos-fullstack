@@ -40,6 +40,9 @@ const Navbar = () => {
                 to={`/${friendlyUrlName}`}
                 className="nav-link"
                 key={_id}
+                onClick={() => {
+                  setShowLinks(false);
+                }}
               >
                 {name}
               </NavLink>

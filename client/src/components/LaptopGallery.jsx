@@ -1,27 +1,13 @@
 /* eslint-disable react/prop-types */
 import styled from 'styled-components';
-import { useEffect } from 'react';
 import PictureStrip from './PictureStrip';
-import {
-  useNavigation,
-  useOutletContext,
-  useLoaderData,
-} from 'react-router-dom';
+import { useOutletContext, useLoaderData } from 'react-router-dom';
 
 const LaptopGallery = () => {
-  const { currPictureIdx, setCurrPictureIdx, isLoading, setIsLoading } =
-    useOutletContext();
+  const { currPictureIdx, setCurrPictureIdx, isLoading } = useOutletContext();
 
   const { currSectionPictures } = useLoaderData();
   const currNbPictures = currSectionPictures.length;
-
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    if (navigation.state === 'loading') {
-      setIsLoading(true);
-    }
-  }, [navigation.state, setIsLoading]);
 
   const handlePrevButtonClick = () => {
     const newId = (currPictureIdx - 1 + currNbPictures) % currNbPictures;
