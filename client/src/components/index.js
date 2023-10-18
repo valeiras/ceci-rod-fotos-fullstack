@@ -1,6 +1,6 @@
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
-import Gallery from './Gallery';
+import Gallery from '../routes/Gallery';
 import LaptopGallery from './LaptopGallery';
 import MobileGallery from './MobileGallery';
 import FullPageImage from './FullPageImage';

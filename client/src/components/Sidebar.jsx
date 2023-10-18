@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useGlobalContext } from '../context';
+import { useOutletContext } from 'react-router-dom';
 import { FADING_TIME1 } from '../constants';
 import ProgressiveImage from 'react-progressive-graceful-image';
 
@@ -10,7 +10,7 @@ const Sidebar = () => {
     setImageById,
     setIsImageChanging,
     isSectionChanging,
-  } = useGlobalContext();
+  } = useOutletContext();
 
   const handleSidebarClick = (imageId) => {
     if (imageId !== currImage.id) {

@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
-import { useGlobalContext } from '../context';
 import { useRef, useEffect } from 'react';
 import { GoInfo, GoX } from 'react-icons/go';
 import ImageInfo from './ImageInfo';
+import { IKImage } from 'imagekitio-react';
+import { useOutletContext } from 'react-router-dom';
 
 const FullPageImage = () => {
   const { currImage, setShowFullPage, showImageInfo, setShowImageInfo } =
-    useGlobalContext();
+    useOutletContext();
 
   const closePage = () => {
     setShowFullPage(false);

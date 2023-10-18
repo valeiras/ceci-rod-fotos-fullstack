@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useGlobalContext } from '../context';
 import ProgressiveImage from 'react-progressive-graceful-image';
+import { useOutletContext } from 'react-router-dom';
 
 const MobileGallery = () => {
   const {
@@ -10,7 +10,7 @@ const MobileGallery = () => {
     setIsSectionChanging,
     showLinks,
     setShowFullPage,
-  } = useGlobalContext();
+  } = useOutletContext();
 
   const handleMobileGalleryClick = (imageId) => {
     setImageById(imageId);

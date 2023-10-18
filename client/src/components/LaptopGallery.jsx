@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useGlobalContext } from '../context';
-import TinyImageLoader from './TinyImageLoader';
 import { FADING_TIME1 } from '../constants';
 import ImageStrip from './ImageStrip';
+import { useOutletContext } from 'react-router-dom';
 
 const LaptopGallery = () => {
   const {
@@ -11,7 +10,7 @@ const LaptopGallery = () => {
     setIsImageChanging,
     isSectionChanging,
     setImageById,
-  } = useGlobalContext();
+  } = useOutletContext();
 
   const currNbImages = currSection.imgs.length;
 
@@ -55,7 +54,6 @@ const LaptopGallery = () => {
           handleNextButtonClick(currImage.id, currNbImages);
         }}
       ></i>
-      {!isSectionChanging && <TinyImageLoader />}
     </div>
   );
 };

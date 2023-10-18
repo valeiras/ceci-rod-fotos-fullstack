@@ -24,7 +24,6 @@ import { pictureProps } from '../../data/pictureData';
 import { IKImage } from 'imagekitio-react';
 import 'regenerator-runtime';
 import imagekit from '../../utils/imagekit';
-const { urlEndpoint } = 'https://ik.imagekit.io/lyhvtcigz/';
 
 export const loader = async ({ params }) => {
   const { sectionName, pictureName } = params;
@@ -156,7 +155,7 @@ const PictureEditor = () => {
 
   useEffect(() => {
     setIsEditMode(false);
-  }, [isSubmitting]);
+  }, [isSubmitting, setIsEditMode]);
 
   const deletePicture = async () => {
     try {
@@ -208,8 +207,8 @@ const PictureEditor = () => {
             <img src="" alt="" id="image-preview" />
           ) : (
             <IKImage
-              urlEndpoint={urlEndpoint}
               src={url}
+              lqip={{ active: true, quality: 20 }}
               transformation={[
                 {
                   width: 412,

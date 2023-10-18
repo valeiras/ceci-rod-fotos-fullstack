@@ -1,10 +1,10 @@
 import { nanoid } from 'nanoid';
-import { useGlobalContext } from '../context';
 import { GoX } from 'react-icons/go';
+import { useOutletContext } from 'react-router-dom';
 
 /* eslint-disable react/prop-types */
 const ImageInfo = ({ info }) => {
-  const { showFullPage, setShowImageInfo } = useGlobalContext();
+  const { showFullPage, setShowImageInfo } = useOutletContext();
   const infoArray = Array.from(Object.entries(info));
   return (
     <div

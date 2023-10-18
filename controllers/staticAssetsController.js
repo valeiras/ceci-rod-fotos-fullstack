@@ -28,7 +28,7 @@ const uploadImage = async (image, sectionName, sectionId) => {
   infoObj.sectionId = sectionId;
   infoObj.friendlyUrlName = getFriendlyUrl(imageName);
 
-  const filepath = `./client/public/imgs/Large/${sectionName}/${imageName}.jpg`;
+  const filepath = `./images/${sectionName}/${imageName}.jpg`;
 
   try {
     const file = await fs.readFile(filepath, { encoding: 'base64' });

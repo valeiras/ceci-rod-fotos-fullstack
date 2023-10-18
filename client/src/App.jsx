@@ -1,24 +1,43 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { Home, AdminLayout, AdminSectionLayout, Login, Error } from './routes';
+import {
+  HomeLayout,
+  AdminLayout,
+  AdminSectionLayout,
+  Login,
+  Error,
+  NavigateToFirstSection,
+  Gallery,
+} from './routes';
 import { action as loginAction } from './routes/Login';
 
-import { loader as menuLoader } from './routes/AdminLayout';
-import { loader as sectionLoader } from './routes/AdminSectionLayout';
+import { loader as homeLoader } from './routes/HomeLayout';
+import { loader as adminLoader } from './routes/AdminLayout';
+import { loader as adminSectionLoader } from './routes/AdminSectionLayout';
 import {
-  loader as singlePictureLoader,
+  loader as pictureEditorLoader,
   action as pictureEditorAction,
 } from './components/admin/PictureEditor';
 
 import { PictureEditor } from './components/admin';
 import { PictureEditorContextProvider } from './components/admin/pictureEditorContext';
 
-import StaticUploader from './routes/StaticUploader';
-
-const router = createBrowserRouter([
+const routes = [
   {
     path: '/',
-    element: <Home />,
+    element: <HomeLayout />,
     errorElement: <Error />,
+    id: 'home',
+    loader: homeLoader,
+    children: [
+      {
+        index: true,
+        element: <NavigateToFirstSection />,
+      },
+      {
+        path: '/:sectionName',
+        element: <Gallery />,
+      },
+    ],
   },
   {
     path: '/login',
@@ -29,17 +48,13 @@ const router = createBrowserRouter([
   {
     path: '/admin',
     element: <AdminLayout />,
-    loader: menuLoader,
+    loader: adminLoader,
     errorElement: <Error />,
     children: [
       {
-        path: 'static_uploader',
-        element: <StaticUploader />,
-      },
-      {
         path: ':sectionName',
         element: <AdminSectionLayout />,
-        loader: sectionLoader,
+        loader: adminSectionLoader,
         children: [
           {
             path: ':pictureName',
@@ -48,14 +63,16 @@ const router = createBrowserRouter([
                 <PictureEditor />
               </PictureEditorContextProvider>
             ),
-            loader: singlePictureLoader,
+            loader: pictureEditorLoader,
             action: pictureEditorAction,
           },
         ],
       },
     ],
   },
-]);
+];
+
+const router = createBrowserRouter(routes);
 function App() {
   return <RouterProvider router={router} />;
 }

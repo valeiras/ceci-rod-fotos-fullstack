@@ -40,29 +40,13 @@ app.use(
   userRouter
 );
 
-app.use(
-  '/api/v1/sections',
-  [authenticateUser, authorizePermissions('admin')],
-  sectionRouter
-);
+app.use('/api/v1/sections', sectionRouter);
 
-app.use(
-  '/api/v1/sectionsByName',
-  [authenticateUser, authorizePermissions('admin')],
-  sectionByNameRouter
-);
+app.use('/api/v1/sectionsByName', sectionByNameRouter);
 
-app.use(
-  '/api/v1/pictures',
-  [authenticateUser, authorizePermissions('admin')],
-  pictureRouter
-);
+app.use('/api/v1/pictures', pictureRouter);
 
-app.use(
-  '/api/v1/picturesByName',
-  [authenticateUser, authorizePermissions('admin')],
-  pictureByNameRouter
-);
+app.use('/api/v1/picturesByName', pictureByNameRouter);
 
 app.use(
   '/api/v1/uploadStaticAssets',

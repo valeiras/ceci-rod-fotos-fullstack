@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
-import { useGlobalContext } from '../context';
 import { useRef } from 'react';
 import ImageInfo from './ImageInfo';
 import ProgressiveImage from 'react-progressive-graceful-image';
+import { useOutletContext } from 'react-router-dom';
 
 const ImageStrip = ({ imgs, currImgId }) => {
   const {
@@ -12,7 +12,7 @@ const ImageStrip = ({ imgs, currImgId }) => {
     setShowFullPage,
     showImageInfo,
     setShowImageInfo,
-  } = useGlobalContext();
+  } = useOutletContext();
   const containerRef = useRef(null);
   const imgRef = useRef(null);
 
