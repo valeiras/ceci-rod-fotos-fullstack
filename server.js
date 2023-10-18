@@ -6,6 +6,11 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
+import path from 'path';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // routers
 import {
@@ -29,6 +34,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+app.use(express.static(path.resolve(__dirname, './public')));
 app.use(cookieParser());
 app.use(express.json());
 
@@ -53,6 +59,10 @@ app.use(
   [authenticateUser, authorizePermissions('admin')],
   staticAssetsRouter
 );
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './public/index.html'));
+});
 
 app.use('*', (req, res) => {
   res.status(404).json({ msg: 'Not found' });
