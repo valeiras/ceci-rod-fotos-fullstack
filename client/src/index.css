@@ -205,82 +205,12 @@ a {
   }
 }
 
-/* ----------------------- */
-/* Full Page Image */
-/* ----------------------- */
-#fullpage-img-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  /* width: 100vw; */
-  width: 100%;
-  height: 100%;
-  z-index: 10;
-  background-color: var(--color-dark);
-  animation: appear var(--fading-time-1) ease;
-  display: flex;
-  align-items: center;
-}
-
-.fullpage-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  max-height: 82vh;
-}
-
-.info-btn,
-.close-btn {
-  position: absolute;
-  top: 1rem;
-  font-size: 2.5rem;
-  color: var(--color-1);
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.info-btn:hover,
-.close-btn:hover {
-  transform: scale(1.05);
-}
-
-.close-btn {
-  right: 1rem;
-}
-
-.info-btn {
-  left: 1rem;
-}
-
-@media screen and (min-width: 1200px) {
-  .info-btn,
-  .close-btn {
-    top: 2rem;
-  }
-  .close-btn {
-    right: 2rem;
-  }
-
-  .info-btn {
-    left: 2rem;
-  }
-  .fullpage-img {
-    max-height: 100vh;
-  }
-}
-
 @media screen and (min-width: 992px) {
   .active {
     cursor: default;
     background-color: var(--color-1);
   }
 }
-
-/*
-=============== 
-Mobile Gallery
-===============
-*/
 
 /*
 =============== 

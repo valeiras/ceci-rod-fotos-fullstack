@@ -1,9 +1,12 @@
 /* eslint-disable react-refresh/only-export-components */
 import { BREAKPOINT } from '../utils/constants';
 import { useEffect } from 'react';
-import MobileGallery from '../components/MobileGallery';
-import LaptopGallery from '../components/LaptopGallery';
-import Sidebar from '../components/Sidebar';
+import {
+  MobileGallery,
+  LaptopGallery,
+  Sidebar,
+  FullPagePicture,
+} from '../components/';
 import shuffle from 'shuffle-array';
 import customFetch from '../utils/customFetch';
 import { useOutletContext, useParams } from 'react-router-dom';
@@ -25,7 +28,7 @@ export const loader = async ({ params }) => {
 
 const Gallery = () => {
   const { sectionName } = useParams();
-  const { setCurrPictureIdx } = useOutletContext();
+  const { setCurrPictureIdx, showFullPage } = useOutletContext();
   const { width } = useOutletContext();
 
   useEffect(() => {
@@ -33,11 +36,15 @@ const Gallery = () => {
   }, [sectionName, setCurrPictureIdx]);
 
   return width < BREAKPOINT ? (
-    <MobileGallery />
+    <>
+      <MobileGallery />
+      {showFullPage && <FullPagePicture />}
+    </>
   ) : (
     <>
       <LaptopGallery />
       <Sidebar />
+      {showFullPage && <FullPagePicture />}
     </>
   );
 };

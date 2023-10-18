@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react-hooks/exhaustive-deps */
 import '../App.css';
-import { Navbar, FullPagePicture } from '../components';
+import { Navbar } from '../components';
 import { Outlet, useNavigation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import customFetch from '../utils/customFetch';
@@ -56,7 +56,6 @@ const HomeLayout = () => {
           height,
         }}
       />
-      {showFullPage && <FullPagePicture />}
     </div>
   );
 };
