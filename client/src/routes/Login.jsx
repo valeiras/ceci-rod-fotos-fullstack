@@ -25,12 +25,8 @@ const Login = () => {
     <Wrapper>
       <Form method="post" className="form">
         <h4>Login</h4>
-        <LoginFormRow
-          name="email"
-          type="email"
-          defaultValue="ceci.rods@gmail.com"
-        />
-        <LoginFormRow name="password" type="password" defaultValue="cecify" />
+        <LoginFormRow name="email" type="email" />
+        <LoginFormRow name="password" type="password" />
 
         <button type="submit" className="btn" disabled={isSubmmitting}>
           {isSubmmitting ? 'enviando...' : 'enviar'}

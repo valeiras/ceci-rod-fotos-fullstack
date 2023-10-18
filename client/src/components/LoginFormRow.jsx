@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-const LoginFormRow = ({ type, name, labelText, defaultValue }) => {
+const LoginFormRow = ({ type, name, labelText }) => {
   return (
     <div className="form-row">
       <label htmlFor={name} className="form-label">
@@ -10,7 +10,7 @@ const LoginFormRow = ({ type, name, labelText, defaultValue }) => {
         id={name}
         name={name}
         className="form-input"
-        defaultValue={defaultValue || ''}
+        defaultValue={''}
         required
       />
     </div>
