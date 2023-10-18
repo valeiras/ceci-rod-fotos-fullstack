@@ -3,7 +3,7 @@ import { GoX } from 'react-icons/go';
 import { useOutletContext } from 'react-router-dom';
 
 /* eslint-disable react/prop-types */
-const ImageInfo = ({ info }) => {
+const PictureInfo = ({ info }) => {
   const { showFullPage, setShowImageInfo } = useOutletContext();
   const infoArray = Array.from(Object.entries(info));
   return (
@@ -26,4 +26,4 @@ const ImageInfo = ({ info }) => {
     </div>
   );
 };
-export default ImageInfo;
+export default PictureInfo;

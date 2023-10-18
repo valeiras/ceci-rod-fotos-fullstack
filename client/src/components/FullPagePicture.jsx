@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useRef, useEffect } from 'react';
 import { GoInfo, GoX } from 'react-icons/go';
-import ImageInfo from './ImageInfo';
+import ImageInfo from './PictureInfo';
 import { IKImage } from 'imagekitio-react';
 import { useOutletContext } from 'react-router-dom';
 
-const FullPageImage = () => {
+const FullPagePicture = () => {
   const { currImage, setShowFullPage, showImageInfo, setShowImageInfo } =
     useOutletContext();
 
@@ -44,4 +44,4 @@ const FullPageImage = () => {
   );
 };
 
-export default FullPageImage;
+export default FullPagePicture;

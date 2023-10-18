@@ -1,61 +1,93 @@
 /* eslint-disable react/prop-types */
-import { FADING_TIME1 } from '../constants';
-import ImageStrip from './ImageStrip';
-import { useOutletContext } from 'react-router-dom';
+import styled from 'styled-components';
+import { useEffect } from 'react';
+import PictureStrip from './PictureStrip';
+import {
+  useNavigation,
+  useOutletContext,
+  useLoaderData,
+} from 'react-router-dom';
 
 const LaptopGallery = () => {
-  const {
-    currImage,
-    currSection,
-    setIsImageChanging,
-    isSectionChanging,
-    setImageById,
-  } = useOutletContext();
+  const { currPictureIdx, setCurrPictureIdx, isLoading, setIsLoading } =
+    useOutletContext();
 
-  const currNbImages = currSection.imgs.length;
+  const { currSectionPictures } = useLoaderData();
+  const currNbPictures = currSectionPictures.length;
 
-  const setNewImageId = (id) => {
-    setIsImageChanging(true);
-    setTimeout(() => {
-      setImageById(id);
-      setIsImageChanging(false);
-    }, FADING_TIME1);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (navigation.state === 'loading') {
+      setIsLoading(true);
+    }
+  }, [navigation.state, setIsLoading]);
+
+  const handlePrevButtonClick = () => {
+    const newId = (currPictureIdx - 1 + currNbPictures) % currNbPictures;
+    setCurrPictureIdx(newId);
   };
 
-  const handlePrevButtonClick = (currImageId, nbImgs) => {
-    const newId = (currImageId - 1 + nbImgs) % nbImgs;
-    setNewImageId(newId);
-  };
-
-  const handleNextButtonClick = (currImageId, nbImgs) => {
-    const newId = (currImageId + 1) % nbImgs;
-    setNewImageId(newId);
+  const handleNextButtonClick = () => {
+    const newId = (currPictureIdx + 1) % currNbPictures;
+    setCurrPictureIdx(newId);
   };
 
   return (
-    <div className="gallery-container">
+    <Wrapper className="LaptopGallery">
       <i
         className="arrow-btn prev-btn fa-solid fa-angle-left"
-        onClick={() => {
-          handlePrevButtonClick(currImage.id, currNbImages);
-        }}
+        onClick={handlePrevButtonClick}
       ></i>
 
-      <ImageStrip imgs={currSection.imgs} currImgId={currImage.id} />
-      {isSectionChanging && (
-        <div
-          className="loading"
-          style={{ opacity: isSectionChanging ? 1 : 0 }}
-        ></div>
-      )}
+      <PictureStrip />
+      {isLoading && <div className="loading"></div>}
       <i
         className="arrow-btn next-btn fa-solid fa-angle-right"
-        onClick={() => {
-          handleNextButtonClick(currImage.id, currNbImages);
-        }}
+        onClick={handleNextButtonClick}
       ></i>
-    </div>
+    </Wrapper>
   );
 };
 
 export default LaptopGallery;
+
+const Wrapper = styled.div`
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+
+  .arrow-btn {
+    font-size: 3rem;
+    align-self: center;
+    transition: var(--transition);
+    cursor: pointer;
+    margin: 5vw;
+    display: none;
+  }
+
+  .next-btn:hover {
+    transform: translateX(5px);
+  }
+
+  .prev-btn:hover {
+    transform: translateX(-5px);
+  }
+
+  @media screen and (min-width: 1200px) {
+    display: flex;
+    .arrow-btn {
+      display: inline-block;
+    }
+  }
+  @media screen and (min-width: 1400px) {
+    .arrow-btn {
+      margin: 10vw;
+    }
+  }
+`;

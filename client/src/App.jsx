@@ -11,6 +11,7 @@ import {
 import { action as loginAction } from './routes/Login';
 
 import { loader as homeLoader } from './routes/HomeLayout';
+import { loader as galleryLoader } from './routes/Gallery';
 import { loader as adminLoader } from './routes/AdminLayout';
 import { loader as adminSectionLoader } from './routes/AdminSectionLayout';
 import {
@@ -35,6 +36,7 @@ const routes = [
       },
       {
         path: '/:sectionName',
+        loader: galleryLoader,
         element: <Gallery />,
       },
     ],

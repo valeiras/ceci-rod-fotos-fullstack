@@ -3,9 +3,9 @@ import Navbar from './Navbar';
 import Gallery from '../routes/Gallery';
 import LaptopGallery from './LaptopGallery';
 import MobileGallery from './MobileGallery';
-import FullPageImage from './FullPageImage';
+import FullPagePicture from './FullPagePicture';
 import LoginFormRow from './LoginFormRow';
-import ImageInfo from './ImageInfo';
+import PictureInfo from './PictureInfo';
 import ConfirmationModal from './ConfirmationModal';
 
 export {
@@ -14,8 +14,8 @@ export {
   Gallery,
   LaptopGallery,
   MobileGallery,
-  FullPageImage,
-  ImageInfo,
+  FullPagePicture,
+  PictureInfo,
   LoginFormRow,
   ConfirmationModal,
 };
