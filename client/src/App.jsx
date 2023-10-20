@@ -20,7 +20,7 @@ import {
 } from './components/admin/PictureEditor';
 
 import { PictureEditor } from './components/admin';
-import { PictureEditorContextProvider } from './components/admin/pictureEditorContext';
+import { PictureEditorContextProvider } from './components/admin/PictureEditorContext';
 
 const routes = [
   {
