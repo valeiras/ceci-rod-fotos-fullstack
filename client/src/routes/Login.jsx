@@ -24,7 +24,7 @@ const Login = () => {
   return (
     <Wrapper>
       <Form method="post" className="form">
-        <h4>Login</h4>
+        <h4>Inicia sesión</h4>
         <LoginFormRow name="email" type="email" />
         <LoginFormRow name="password" type="password" />
 
