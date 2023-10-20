@@ -25,6 +25,17 @@ import { IKImage } from 'imagekitio-react';
 import 'regenerator-runtime';
 import imagekit from '../../utils/imagekit';
 
+const defaultPicture = {
+  name: 'Nueva imagen',
+  url: null,
+  model: 'SONY ILCE-7M3',
+  lens: '28-70 mm',
+  pointF: 'f/5.6',
+  iso: '100',
+  exposure: '1/160 s',
+  focalDistance: '70 mm',
+};
+
 export const loader = async ({ params }) => {
   const { sectionName, pictureName } = params;
   let picture;
@@ -32,11 +43,7 @@ export const loader = async ({ params }) => {
     const { data: section } = await customFetch(
       `sectionsByName/${sectionName}`
     );
-    picture = {
-      name: 'Nueva imagen',
-      sectionId: section._id,
-      url: null,
-    };
+    picture = { ...defaultPicture, sectionId: section._id };
   } else {
     const { data } = await customFetch(`picturesByName/${pictureName}`);
     picture = data;
@@ -154,7 +161,7 @@ const PictureEditor = () => {
   const isSubmitting = navigation.state === 'submitting';
 
   useEffect(() => {
-    setIsEditMode(false);
+    if (isSubmitting) setIsEditMode(false);
   }, [isSubmitting, setIsEditMode]);
 
   const deletePicture = async () => {
