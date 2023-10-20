@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useNavigation, useParams } from 'react-router-dom';
-import { usePictureEditorContext } from './pictureEditorContext';
+import { usePictureEditorContext } from './PictureEditorContext';
 import { NEW_IMAGE } from '../../utils/constants';
 
 /* eslint-disable react/prop-types */

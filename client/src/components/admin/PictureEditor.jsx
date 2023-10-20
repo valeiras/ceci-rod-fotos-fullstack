@@ -16,7 +16,7 @@ import customFetch from '../../utils/customFetch';
 import { NEW_IMAGE } from '../../utils/constants';
 import { PictureEditorFormRow, ButtonStrip, ImageInput } from '.';
 import { useAdminContext } from './AdminContext';
-import { usePictureEditorContext } from './pictureEditorContext';
+import { usePictureEditorContext } from './PictureEditorContext';
 
 import ConfirmationModal from '../ConfirmationModal';
 import { pictureProps } from '../../data/pictureData';

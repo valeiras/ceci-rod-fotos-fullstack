@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 import { propsToTags } from '../../data/pictureData';
 import { useEffect, useState } from 'react';
-import { usePictureEditorContext } from './pictureEditorContext';
+import { usePictureEditorContext } from './PictureEditorContext';
 
 const PictureEditorFormRow = ({ name, initialValue, isDisabled }) => {
   const [value, setValue] = useState(initialValue);

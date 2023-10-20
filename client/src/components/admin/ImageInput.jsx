@@ -1,5 +1,5 @@
 import { AiOutlineUpload } from 'react-icons/ai';
-import { usePictureEditorContext } from './pictureEditorContext';
+import { usePictureEditorContext } from './PictureEditorContext';
 import styled from 'styled-components';
 import { useEffect } from 'react';
 
