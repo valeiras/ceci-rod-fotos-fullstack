@@ -47,11 +47,8 @@ app.use(
 );
 
 app.use('/api/v1/sections', sectionRouter);
-
 app.use('/api/v1/sectionsByName', sectionByNameRouter);
-
 app.use('/api/v1/pictures', pictureRouter);
-
 app.use('/api/v1/picturesByName', pictureByNameRouter);
 
 app.use(

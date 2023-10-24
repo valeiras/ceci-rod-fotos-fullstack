@@ -24,7 +24,7 @@ export const login = async (req, res) => {
     throw new UnauthenticatedError('El email o la contraseña no son correctos');
 
   const token = createJWT({ userId: user._id, role: user.role });
-  const oneDay = 1000 * 60 * 24;
+  const oneDay = 1000 * 60 * 60 * 24;
   res.cookie('token', token, {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
@@ -37,6 +37,10 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
   res.cookie('token', '', { httpOnly: true, expires: new Date(Date.now()) });
   res.status(StatusCodes.OK).json({ msg: 'user logged out' });
+};
+
+export const verifyAdmin = (req, res) => {
+  res.status(StatusCodes.OK).json({ msg: 'user correctly logged in' });
 };
 
 export const authenticateImageKit = (req, res) => {

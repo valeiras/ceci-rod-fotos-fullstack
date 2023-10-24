@@ -4,6 +4,7 @@ import {
   login,
   logout,
   authenticateImageKit,
+  verifyAdmin,
 } from '../controllers/authController.js';
 import {
   validateLoginInput,
@@ -23,6 +24,11 @@ router.get(
   '/imagekit',
   [authenticateUser, authorizePermissions('admin')],
   authenticateImageKit
+);
+router.get(
+  '/verifyAdmin',
+  [authenticateUser, authorizePermissions('admin')],
+  verifyAdmin
 );
 
 export default router;

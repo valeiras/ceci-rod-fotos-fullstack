@@ -2,15 +2,20 @@
 import styled from 'styled-components';
 import { SectionSelector } from '../components/admin';
 import customFetch from '../utils/customFetch';
-import { Outlet } from 'react-router-dom';
+import { Outlet, redirect } from 'react-router-dom';
 import {
   AdminContextProvider,
   useAdminContext,
 } from '../components/admin/AdminContext';
 
 export const loader = async () => {
-  const { data } = await customFetch('/sections');
-  return data.sections;
+  try {
+    await customFetch('auth/verifyAdmin');
+    const { data } = await customFetch('/sections');
+    return data.sections;
+  } catch (error) {
+    return redirect('/login');
+  }
 };
 
 const CurrentPictureName = () => {
