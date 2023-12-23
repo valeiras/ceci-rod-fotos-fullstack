@@ -1,4 +1,6 @@
-import app from './app';
+import app from './app.js';
 import http from 'http';
 
-http.createServer(app).listen(process.env.PORT);
+const port = process.env.PORT || 3000;
+http.createServer(app).listen(port);
+console.log(`Server listening on port: ${port}`);
